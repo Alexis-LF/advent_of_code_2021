@@ -13,13 +13,11 @@ g++ prog.cpp -std=c++11 -o prog.out
 #include <vector>
 using namespace std;
 
-int main()
+vector<int> get_int_inputs()
 {
     const string filename = "input.txt";
+    vector<int> inputs;
     string line;
-    vector<int> reports;
-    unsigned int count = 0;
-
     ifstream file(filename);
     if (!file)
     {
@@ -27,22 +25,30 @@ int main()
     }
     while (getline(file, line))
     {
-        reports.push_back(stoi(line));
+        inputs.push_back(stoi(line));
     }
-    for (auto report : reports)
-    {
-        cout << report << "\t";
-    }
+    return inputs;
+}
 
+int part1(vector<int> reports)
+{
+    unsigned int count = 0;
     for (int i = 1; i < reports.size(); ++i)
+    {
+        if (reports[i] > reports[i - 1])
         {
-            if ( reports[i] > reports[i-1])
-            {
-                count++;
-            }
+            count++;
         }
+    }
+    return count;
+}
 
-    cout << "\nthere are " << count <<" measurements that are larger than the previous measurement." << endl;
+int main()
+{
+    vector<int> reports = get_int_inputs();
+    int result_p1 = part1(reports);
+
+    cout << "\nthere are " << result_p1 << " measurements that are larger than the previous measurement." << endl;
 
     return 0;
 }
